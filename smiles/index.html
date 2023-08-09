@@ -1,69 +1,67 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head >
-    <meta charset="UTF-8" />
+  <head>
+    <meta charset="utf-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>My first three.js app</title>
-    <link type="text/css" rel="stylesheet" href="./style.css" />
+    <link type="text/css" rel="stylesheet" href="./index.cb711ca7.css" />
   </head>
   <body>
-    <!-- <div id="info">Description</div> -->
-    <script type="module" src="./index.js"></script>
-
+    <script type="module" src="./index.84467201.js"></script>
     <script id="vertShader" type="shader">
-      varying vec2 vUv;
-      varying vec3 vecPos;
-      varying vec3 v_position;
-      uniform float time;
-      uniform float blend;
-			uniform sampler2D original;
-			uniform sampler2D cry;
-      
-      void main() {
-				vUv = uv;
-        v_position = position.xyz; 
-				float roundBland = sin(3.1415926*blend);
-				float stepBland = clamp(1.*(v_position.x + v_position.y)+3.*blend -1.,0.,1.);
-
-				float originalR = texture2D(original, vUv).r;
-				float cryR = texture2D(cry, vUv).r;
-				v_position.z = 0.2*mix(originalR,cryR,stepBland) +roundBland* 0.1*sin(v_position.x * 10. + time/100.); 
-
-				
-				v_position.x = v_position.x + roundBland * 0.3 * sin(v_position.x+v_position.y+blend);
-				v_position.y = v_position.y + roundBland * 0.3 * sin(v_position.x+v_position.y+blend);
-
-        vecPos = (modelViewMatrix * vec4(v_position, 1.0)).xyz;
-        gl_Position = projectionMatrix * vec4(vecPos, 1.0);
-      }
-    </script>
-    <script id="fragShader" type="shader">
-      varying vec3 v_position;
-      varying vec2 vUv;
-			uniform float blend;
+         varying vec2 vUv;
+         varying vec3 vecPos;
+         varying vec3 v_position;
+         uniform float time;
+         uniform float blend;
       uniform sampler2D original;
       uniform sampler2D cry;
 
+         void main() {
+      	vUv = uv;
+           v_position = position.xyz;
+      	float roundBland = sin(3.1415926*blend);
+      	float stepBland = clamp(1.*(v_position.x + v_position.y)+3.*blend -1.,0.,1.);
 
-      void main(void) {
-        vec2 st = v_position.xy;
-        float koef = clamp(v_position.z/60.,0.,1.);
-        vec3 color1 = vec3(0.5,0.5,1.);
-        vec3 color2 = vec3(0.,0.,1.);
-        vec3 color3 = mix(color1,color2,koef);
+      	float originalR = texture2D(original, vUv).r;
+      	float cryR = texture2D(cry, vUv).r;
+      	v_position.z = 0.2*mix(originalR,cryR,stepBland) +roundBland* 0.1*sin(v_position.x * 10. + time/100.);
 
-        vec2 grid = abs(fract(300.*st/4. - 0.5) - 0.5) / fwidth(300.*st/4.);
-          float color = min(grid.x, grid.y);
-          gl_FragColor = vec4(color3,1. - color);
-					gl_FragColor = vec4(1.,0.,0.0,1.);
 
-					float stepBland = clamp(v_position.x + v_position.y+3.*blend -1.,0.,1.);
-					vec4 originalC = texture2D(original, vUv);
-					vec4 cryC = texture2D(cry, vUv);
-					vec4 result = originalC*(1.-stepBland) + cryC*stepBland;
-					gl_FragColor = result;
-      }
+      	v_position.x = v_position.x + roundBland * 0.3 * sin(v_position.x+v_position.y+blend);
+      	v_position.y = v_position.y + roundBland * 0.3 * sin(v_position.x+v_position.y+blend);
+
+           vecPos = (modelViewMatrix * vec4(v_position, 1.0)).xyz;
+           gl_Position = projectionMatrix * vec4(vecPos, 1.0);
+         }
+    </script>
+    <script id="fragShader" type="shader">
+         varying vec3 v_position;
+         varying vec2 vUv;
+      uniform float blend;
+         uniform sampler2D original;
+         uniform sampler2D cry;
+
+
+         void main(void) {
+           vec2 st = v_position.xy;
+           float koef = clamp(v_position.z/60.,0.,1.);
+           vec3 color1 = vec3(0.5,0.5,1.);
+           vec3 color2 = vec3(0.,0.,1.);
+           vec3 color3 = mix(color1,color2,koef);
+
+           vec2 grid = abs(fract(300.*st/4. - 0.5) - 0.5) / fwidth(300.*st/4.);
+             float color = min(grid.x, grid.y);
+             gl_FragColor = vec4(color3,1. - color);
+      		gl_FragColor = vec4(1.,0.,0.0,1.);
+
+      		float stepBland = clamp(v_position.x + v_position.y+3.*blend -1.,0.,1.);
+      		vec4 originalC = texture2D(original, vUv);
+      		vec4 cryC = texture2D(cry, vUv);
+      		vec4 result = originalC*(1.-stepBland) + cryC*stepBland;
+      		gl_FragColor = result;
+         }
     </script>
   </body>
 </html>

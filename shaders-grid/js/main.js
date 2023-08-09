@@ -1,6 +1,6 @@
 import * as THREE from 'three';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
-import Perlin from './lib/Perlin.js';
+import Perlin from './lib/perlin.js';
 
 let size = 300;
 var material;
